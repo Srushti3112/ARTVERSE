@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { store } from "./redux/store";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "./index.css";
-import App from "./app";
+import App from "./App.jsx";
 import { Provider } from "react-redux";
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById("root"));
