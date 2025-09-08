@@ -18,7 +18,7 @@ class SocketService {
         token ? "present" : "missing"
       );
 
-      this.socket = io("http://localhost:5000", {
+      this.socket = io("http://localhost:10000", {
         path: "/socket.io/",
         transports: ["polling"],
         auth: { token },

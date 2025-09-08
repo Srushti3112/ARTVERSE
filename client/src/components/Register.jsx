@@ -64,15 +64,18 @@ const Register = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/users/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        mode: "cors",
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://artverse-4.onrender.com/api/users/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          mode: "cors",
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await response.json();
 

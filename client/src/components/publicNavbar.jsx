@@ -51,8 +51,8 @@ const PublicNavbar = () => {
             </div>
 
             {/* Center: Nav links */}
-            <div className="hidden md:flex flex-1 justify-center">
-              <div className="flex items-center gap-2">
+            <div className="hidden  md:flex flex-1 justify-center">
+              <div className="flex tracking-wide  items-center gap-2">
                 <NavigationLink to="/">Home</NavigationLink>
                 <NavigationLink to="/explore">Gallery</NavigationLink>
                 <NavigationLink to="/artists">Artists</NavigationLink>
@@ -82,7 +82,7 @@ const PublicNavbar = () => {
             {/* Mobile: Simple Navbar Links */}
             <div className="md:hidden flex items-center gap-2">
               <NavLink
-                to="/home"
+                to="/"
                 className={({ isActive }) =>
                   `px-3 py-2 rounded-full text-sm ${
                     isActive
@@ -96,7 +96,7 @@ const PublicNavbar = () => {
               <NavLink
                 to="/explore"
                 className={({ isActive }) =>
-                  `px-3 py-2 rounded-full text-sm ${
+                  `px-3 py-2 rounded-full text-sm text-[#8b1e5a] ${
                     isActive
                       ? "bg-rose-100 text-[#8b1e5a]"
                       : "text-[#8b1e5a] hover:bg-rose-50"

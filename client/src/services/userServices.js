@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/api/users";
+const BASE_URL = "https://artverse-4.onrender.com/api/users";
 
 //! Login
 export const loginAPI = async ({ email, password }) => {

@@ -56,7 +56,7 @@ const Login = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/users/forgot-password",
+        "http://localhost:10000/api/users/forgot-password",
         {
           method: "POST",
           headers: {
@@ -102,7 +102,7 @@ const Login = () => {
       localStorage.setItem("userInfo", JSON.stringify(userData));
 
       setTimeout(() => {
-        navigate("/home");
+        navigate("/");
       }, 2000);
     },
     onError: (error) => {

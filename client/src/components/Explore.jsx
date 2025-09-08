@@ -26,9 +26,12 @@ const Explore = () => {
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      const response = await axios.get("http://localhost:5000/api/wishlist", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        "https://artverse-4.onrender.com/api/wishlist",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const likedIds = new Set(response.data.map((item) => item.artworkId));
       setLikedArtworks(likedIds);
     } catch (error) {
@@ -52,7 +55,7 @@ const Explore = () => {
     const fetchArtworks = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/artwork/explore"
+          "https://artverse-4.onrender.com/api/artwork/explore"
         );
         const processedArtworks = response.data.map((artwork) => ({
           ...artwork,
@@ -94,7 +97,7 @@ const Explore = () => {
       const isLiked = wishlistItems.some((item) => item._id === artwork._id);
       const endpoint = isLiked ? "remove" : "add";
       const response = await axios.post(
-        `http://localhost:5000/api/artwork/wishlist/${endpoint}`,
+        `https://artverse-4.onrender.com/api/artwork/wishlist/${endpoint}`,
         { artworkId: artwork._id },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );

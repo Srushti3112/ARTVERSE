@@ -56,7 +56,7 @@ const Homepage = () => {
     const fetchFeaturedArtworks = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/artwork/featured"
+          "http://localhost:10000/api/artwork/featured"
         );
         setFeaturedArtworks(response.data);
       } catch (error) {

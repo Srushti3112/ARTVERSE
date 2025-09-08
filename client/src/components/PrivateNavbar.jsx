@@ -58,7 +58,7 @@ const PrivateNavbar = () => {
       if (user) {
         try {
           const response = await axios.get(
-            `http://localhost:5000/api/users/profile?email=${user.email}`,
+            `https://artverse-4.onrender.com/api/users/profile?email=${user.email}`,
             {
               headers: {
                 Authorization: `Bearer ${user.token}`,
@@ -81,7 +81,7 @@ const PrivateNavbar = () => {
         if (!user || !user.token) return;
 
         const response = await axios.get(
-          "http://localhost:5000/api/artwork/wishlist",
+          "https://artverse-4.onrender.com/api/artwork/wishlist",
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -98,7 +98,7 @@ const PrivateNavbar = () => {
   const handleUpload = async (formData) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/artwork/upload",
+        "https://artverse-4.onrender.com/api/artwork/upload",
         formData,
         {
           headers: {
@@ -117,7 +117,7 @@ const PrivateNavbar = () => {
   const handleRemoveFromWishlist = async (item) => {
     try {
       await axios.post(
-        "http://localhost:5000/api/artwork/wishlist/remove",
+        "https://artverse-4.onrender.com/api/artwork/wishlist/remove",
         { artworkId: item._id },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -223,14 +223,6 @@ const PrivateNavbar = () => {
     </div>
   );
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    const q = searchQuery.trim();
-    if (!q) return;
-    navigate(`/explore?search=${encodeURIComponent(q)}`);
-    setIsMobileSearchOpen(false);
-  };
-
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-50">
@@ -238,21 +230,23 @@ const PrivateNavbar = () => {
           <div className="container-custom px-4 sm:px-6 lg:px-8">
             <div className="flex items-center h-16 sm:h-20">
               {/* Logo */}
-              <Link to="/" className="flex-shrink-0 mr-8">
-                <img
-                  src="/logo.png"
-                  alt="Artverse logo"
-                  className="h-8 sm:h-10 w-auto select-none pointer-events-none drop-shadow-md"
-                />
-              </Link>
+              <div className="flex-shrink-0 ml-2">
+                <Link to="/home" className="flex items-center">
+                  <span className="font-extrabold tracking-wide text-2xl sm:text-3xl text-[#0b5d3b]">
+                    ARTVERSE
+                  </span>
+                </Link>
+              </div>
 
               {/* Navigation Links */}
-              <div className="hidden md:flex items-center flex-1 justify-between">
+              <div className="hidden md:flex flex-1 justify-center">
                 {/* Left section: Navigation Links */}
-                <div className="flex items-center gap-8">
+                <div className="flex items-center gap-2">
                   <NavigationLink to="/">Home</NavigationLink>
-                  <NavigationLink to="/explore">Explore</NavigationLink>
-
+                  <NavigationLink to="/explore">Gallery</NavigationLink>
+                  <NavigationLink to="/artists">Artists</NavigationLink>
+                  <NavigationLink to="/exhibitions">Exhibitions</NavigationLink>
+                  <NavigationLink to="/about">About</NavigationLink>
                   {/* Add Upload Artwork button here */}
                   {user?.role === "artist" && (
                     <button
@@ -263,19 +257,6 @@ const PrivateNavbar = () => {
                       <span>Upload Artwork</span>
                     </button>
                   )}
-                </div>
-
-                {/* Center: Search (desktop) */}
-                <div className="flex-1 max-w-xl mx-6">
-                  <form onSubmit={handleSearchSubmit} className="relative">
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Search artworks, artists..."
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white/90"
-                    />
-                  </form>
                 </div>
 
                 {/* Right: Wishlist */}
@@ -304,38 +285,28 @@ const PrivateNavbar = () => {
 
               {/* Mobile: Simple Navbar Links */}
               <div className="md:hidden ml-auto flex items-center gap-2">
-                {/* Mobile search toggle */}
-                <button
-                  onClick={() => setIsMobileSearchOpen((s) => !s)}
-                  className="px-3 py-2 rounded-lg text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100"
-                  aria-label="Toggle search"
-                >
-                  🔍
-                </button>
                 <NavLink
                   to="/"
                   className={({ isActive }) =>
-                    `px-3 py-2 rounded-lg text-sm ${
+                    `px-3 py-2 rounded-full text-sm ${
                       isActive
-                        ? "text-gray-900 bg-gray-100"
-                        : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                        ? "bg-rose-100 text-[#8b1e5a]"
+                        : "text-[#8b1e5a] hover:bg-rose-50"
                     }`
                   }
                 >
-                  <FontAwesomeIcon icon={faHome} className="mr-1" />
                   Home
                 </NavLink>
                 <NavLink
                   to="/explore"
                   className={({ isActive }) =>
-                    `px-3 py-2 rounded-lg text-sm ${
+                    `px-3 py-2 rounded-full text-sm ${
                       isActive
-                        ? "text-gray-900 bg-gray-100"
-                        : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                        ? "bg-rose-100 text-[#8b1e5a]"
+                        : "text-[#8b1e5a] hover:bg-rose-50"
                     }`
                   }
                 >
-                  <FontAwesomeIcon icon={faCompass} className="mr-1" />
                   Explore
                 </NavLink>
                 {user?.role === "artist" && (
@@ -349,9 +320,14 @@ const PrivateNavbar = () => {
                 )}
                 <button
                   onClick={() => setIsWishlistOpen(true)}
-                  className="px-3 py-2 rounded-lg text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                  className={({ isActive }) =>
+                    `px-3 py-2 rounded-full text-sm  ${
+                      isActive
+                        ? "bg-rose-100 text-[#8b1e5a]"
+                        : "text-[#8b1e5a] hover:bg-rose-50"
+                    }`
+                  }
                 >
-                  <FontAwesomeIcon icon={faHeart} className="mr-1" />
                   Wishlist
                 </button>
                 <NavLink
@@ -366,27 +342,6 @@ const PrivateNavbar = () => {
                 </NavLink>
               </div>
             </div>
-            {/* Mobile search input row */}
-            {isMobileSearchOpen && (
-              <div className="md:hidden px-4 pb-3">
-                <form onSubmit={handleSearchSubmit} className="relative">
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search artworks, artists..."
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600"
-                    aria-label="Search"
-                  >
-                    🔍
-                  </button>
-                </form>
-              </div>
-            )}
           </div>
         </div>
 

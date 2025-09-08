@@ -86,7 +86,7 @@ const ArtistProfileForm = () => {
       console.log("Sending data to server:", completeFormData);
 
       const response = await axios.post(
-        "http://localhost:5000/api/users/ArtistProfileForm",
+        "http://localhost:10000/api/users/ArtistProfileForm",
         completeFormData,
         {
           headers: {

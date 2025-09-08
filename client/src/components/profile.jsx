@@ -132,7 +132,7 @@ const Profile = () => {
         }
 
         const response = await axios.get(
-          `http://localhost:5000/api/users/profile/${targetUserId}`,
+          `https://artverse-4.onrender.com/api/users/profile/${targetUserId}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
@@ -161,9 +161,12 @@ const Profile = () => {
 
   const handleDelete = async (artworkId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/artwork/${artworkId}`, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+      await axios.delete(
+        `https://artverse-4.onrender.com/api/artwork/${artworkId}`,
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
 
       // Remove from state
       setArtwork((prev) => prev.filter((art) => art._id !== artworkId));
@@ -176,7 +179,7 @@ const Profile = () => {
   const handleUpload = async (formData) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/artwork/upload",
+        "https://artverse-4.onrender.com/api/artwork/upload",
         formData,
         {
           headers: {
@@ -242,15 +245,18 @@ const Profile = () => {
                 </motion.div>
 
                 {/* Message Button - Only show for other users' profiles */}
-                {!isOwnProfile && (
+                {isOwnProfile && profile?.artCategory === "artist" && (
                   <motion.button
-                    whileHover={{ scale: 1.1 }}
+                    onClick={() => setIsUploadModalOpen(true)}
+                    whileHover={{
+                      scale: 1.02,
+                      boxShadow: "0 15px 25px -10px rgba(124, 58, 237, 0.5)",
+                    }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => setShowChat(true)}
-                    className="group relative p-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
-                    title="Message Artist"
+                    className="relative group overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-500 text-white font-medium px-6 py-3 rounded-xl shadow-lg"
                   >
-                    <FontAwesomeIcon icon={faMessage} className="text-xl" />
+                    <FontAwesomeIcon icon={faCloudUploadAlt} className="mr-2" />
+                    Upload Artwork
                   </motion.button>
                 )}
               </div>
@@ -266,7 +272,7 @@ const Profile = () => {
                 {/* Role Badge */}
                 <div className="flex justify-center">
                   <span className="px-4 py-1 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 text-purple-300 text-sm font-medium">
-                    {user.role === "artist" ? "Artist" : "Art Enthusiast"}
+                    {user.role === "artCategory" ? "Artist" : "Art Enthusiast"}
                   </span>
                 </div>
 
@@ -371,9 +377,23 @@ const Profile = () => {
                     : `${profile?.fullName}'s Artworks`}
                 </h2>
                 <p className="text-gray-300">
-                  {isOwnProfile
-                    ? "Showcase of your creative journey"
-                    : `Artwork collection by ${profile?.fullName}`}
+                  {isOwnProfile && user.artCategory === "artist" && (
+                    <motion.button
+                      onClick={() => setIsUploadModalOpen(true)}
+                      whileHover={{
+                        scale: 1.02,
+                        boxShadow: "0 15px 25px -10px rgba(124, 58, 237, 0.5)",
+                      }}
+                      whileTap={{ scale: 0.95 }}
+                      className="relative group overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-500 text-white font-medium px-6 py-3 rounded-xl shadow-lg"
+                    >
+                      <FontAwesomeIcon
+                        icon={faCloudUploadAlt}
+                        className="mr-2"
+                      />
+                      Upload Artwork
+                    </motion.button>
+                  )}
                 </p>
               </div>
             </div>
