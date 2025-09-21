@@ -38,6 +38,11 @@ app.use(router);
 app.use("/api/artwork", artworkRouter); // Add this line to register artwork routes
 app.use("/api/users/profile", profileRouter); // Add this line to register profile routes
 app.use("/api/wishlist", wishlistRoutes);
+app.get("/", (req, res) => {
+  res.send(
+    "Backend is running 🚀. Use /register, /login, or /profile endpoints."
+  );
+});
 
 // Error handling
 app.use(errorHandler);
