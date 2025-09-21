@@ -55,10 +55,7 @@ const Homepage = () => {
   useEffect(() => {
     const fetchFeaturedArtworks = async () => {
       try {
-        const baseURL =
-          process.env.NODE_ENV === "production"
-            ? "https://artverse-4.onrender.com"
-            : "http://localhost:10000";
+        const baseURL = "https://artverse-4.onrender.com";
         const response = await axios.get(`${baseURL}/api/artwork/featured`);
         setFeaturedArtworks(response.data);
       } catch (error) {
