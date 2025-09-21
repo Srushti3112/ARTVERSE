@@ -5,10 +5,13 @@ const BASE_URL = "https://artverse-4.onrender.com/api/users";
 //! Login
 export const loginAPI = async ({ email, password }) => {
   try {
-    const response = await axios.post(`${BASE_URL}/login`, {
-      email,
-      password,
-    });
+    const response = await axios.post(
+      `${BASE_URL}/login`,
+      { email, password },
+      {
+        withCredentials: true, // 🔑 Important for cookies / session
+      }
+    );
     console.log("Login API Response:", response.data); // Debug log
     return response.data;
   } catch (error) {
@@ -20,11 +23,13 @@ export const loginAPI = async ({ email, password }) => {
 //! Register
 export const registerAPI = async ({ email, password, username }) => {
   try {
-    const response = await axios.post(`${BASE_URL}/register`, {
-      email,
-      password,
-      username,
-    });
+    const response = await axios.post(
+      `${BASE_URL}/register`,
+      { email, password, username },
+      {
+        withCredentials: true, // 🔑 Add here too
+      }
+    );
     return response.data;
   } catch (error) {
     throw error.response?.data || { message: "Failed to connect to server" };
@@ -44,6 +49,7 @@ export const profileAPI = async (token) => {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+      withCredentials: true, // 🔑 Also add here
     });
     console.log("Profile API Response:", response.data); // Debug log
     return response.data;
