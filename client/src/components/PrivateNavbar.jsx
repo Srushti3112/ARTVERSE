@@ -17,6 +17,7 @@ import {
   faHeart,
   faTimes,
   faTrash,
+  faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import UploadArtworkModal from "./UploadArtworkModal";
 
@@ -47,6 +48,7 @@ const PrivateNavbar = () => {
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const wishlistItems = useSelector((state) => state.wishlist.items);
   const dispatch = useDispatch();
   const logoutHandler = () => {
@@ -283,69 +285,139 @@ const PrivateNavbar = () => {
                 </button>
               </div>
 
-              {/* Mobile: Simple Navbar Links */}
-              <div className="md:hidden ml-auto flex items-center gap-2">
-                <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    `px-3 py-2 rounded-full text-sm ${
-                      isActive
-                        ? "bg-rose-100 text-[#8b1e5a]"
-                        : "text-[#8b1e5a] hover:bg-rose-50"
-                    }`
-                  }
-                >
-                  Home
-                </NavLink>
-                <NavLink
-                  to="/explore"
-                  className={({ isActive }) =>
-                    `px-3 py-2 rounded-full text-sm ${
-                      isActive
-                        ? "bg-rose-100 text-[#8b1e5a]"
-                        : "text-[#8b1e5a] hover:bg-rose-50"
-                    }`
-                  }
-                >
-                  Explore
-                </NavLink>
-                {user?.role === "artist" && (
-                  <button
-                    onClick={() => setIsUploadModalOpen(true)}
-                    className="px-3 py-2 rounded-lg text-sm bg-indigo-600 text-white hover:bg-indigo-700"
-                  >
-                    <FontAwesomeIcon icon={faCloudUploadAlt} className="mr-1" />
-                    Upload
-                  </button>
-                )}
+              {/* Mobile: Hamburger Menu */}
+              <div className="md:hidden ml-auto flex items-center">
                 <button
-                  onClick={() => setIsWishlistOpen(true)}
-                  className={({ isActive }) =>
-                    `px-3 py-2 rounded-full text-sm  ${
-                      isActive
-                        ? "bg-rose-100 text-[#8b1e5a]"
-                        : "text-[#8b1e5a] hover:bg-rose-50"
-                    }`
-                  }
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  className="p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
                 >
-                  Wishlist
+                  <FontAwesomeIcon 
+                    icon={isMobileMenuOpen ? faTimes : faBars} 
+                    className="text-xl" 
+                  />
                 </button>
-                <NavLink
-                  to="/profile"
-                  className={({ isActive }) =>
-                    `px-2 py-1 rounded-lg ${
-                      isActive ? "bg-gray-100" : "hover:bg-gray-100"
-                    }`
-                  }
-                >
-                  <UserAvatar />
-                </NavLink>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Removed dropdown mobile navigation in favor of inline links above */}
+        {/* Mobile Menu Dropdown */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-white/95 backdrop-blur-lg border-b border-white/20 shadow-lg">
+            <div className="container-custom px-4 py-4">
+              <div className="flex flex-col space-y-2">
+                <NavLink
+                  to="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 transition-colors ${
+                      isActive
+                        ? "bg-gray-100 text-gray-900"
+                        : "hover:bg-gray-50"
+                    }`
+                  }
+                >
+                  <FontAwesomeIcon icon={faHome} className="text-lg" />
+                  <span>Home</span>
+                </NavLink>
+                
+                <NavLink
+                  to="/explore"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 transition-colors ${
+                      isActive
+                        ? "bg-gray-100 text-gray-900"
+                        : "hover:bg-gray-50"
+                    }`
+                  }
+                >
+                  <FontAwesomeIcon icon={faCompass} className="text-lg" />
+                  <span>Gallery</span>
+                </NavLink>
+                
+                <NavLink
+                  to="/artists"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <FontAwesomeIcon icon={faUserPlus} className="text-lg" />
+                  <span>Artists</span>
+                </NavLink>
+                
+                <NavLink
+                  to="/exhibitions"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <FontAwesomeIcon icon={faSearch} className="text-lg" />
+                  <span>Exhibitions</span>
+                </NavLink>
+                
+                <NavLink
+                  to="/about"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <FontAwesomeIcon icon={faSearch} className="text-lg" />
+                  <span>About</span>
+                </NavLink>
+                
+                {user?.role === "artist" && (
+                  <button
+                    onClick={() => {
+                      setIsUploadModalOpen(true);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
+                  >
+                    <FontAwesomeIcon icon={faCloudUploadAlt} className="text-lg" />
+                    <span>Upload Artwork</span>
+                  </button>
+                )}
+                
+                <button
+                  onClick={() => {
+                    setIsWishlistOpen(true);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <FontAwesomeIcon icon={faHeart} className="text-lg" />
+                  <span>Wishlist</span>
+                </button>
+                
+                <div className="border-t border-gray-200 pt-2 mt-2">
+                  <NavLink
+                    to="/profile"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-rose-500 flex items-center justify-center text-sm text-white">
+                      {user?.username
+                        ?.split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .toUpperCase()}
+                    </div>
+                    <span>Profile</span>
+                  </NavLink>
+                  
+                  <button
+                    onClick={() => {
+                      logoutHandler();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors w-full"
+                  >
+                    <FontAwesomeIcon icon={faSignOutAlt} className="text-lg" />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </nav>
       <UploadArtworkModal
         isOpen={isUploadModalOpen}

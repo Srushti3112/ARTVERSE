@@ -7,6 +7,8 @@ import {
   faSignInAlt,
   faUserPlus,
   faSearch,
+  faBars,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 
 const NavigationLink = ({ to, children, icon }) => (
@@ -28,6 +30,7 @@ const NavigationLink = ({ to, children, icon }) => (
 const PublicNavbar = () => {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -79,50 +82,107 @@ const PublicNavbar = () => {
               </Link>
             </div>
 
-            {/* Mobile: Simple Navbar Links */}
-            <div className="md:hidden flex items-center gap-2">
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  `px-3 py-2 rounded-full text-sm ${
-                    isActive
-                      ? "bg-rose-100 text-[#8b1e5a]"
-                      : "text-[#8b1e5a] hover:bg-rose-50"
-                  }`
-                }
+            {/* Mobile: Hamburger Menu */}
+            <div className="md:hidden flex items-center">
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2 rounded-lg text-[#8b1e5a] hover:bg-rose-50 transition-colors"
               >
-                Home
-              </NavLink>
-              <NavLink
-                to="/explore"
-                className={({ isActive }) =>
-                  `px-3 py-2 rounded-full text-sm text-[#8b1e5a] ${
-                    isActive
-                      ? "bg-rose-100 text-[#8b1e5a]"
-                      : "text-[#8b1e5a] hover:bg-rose-50"
-                  }`
-                }
-              >
-                Explore
-              </NavLink>
-              <Link
-                to="/login"
-                className="px-3 py-2 rounded-full text-sm text-[#8b1e5a] hover:bg-rose-50"
-              >
-                <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
-                Login
-              </Link>
-              <Link
-                to="/Register"
-                className="px-3 py-2 rounded-full text-sm bg-[#0b5d3b] text-white hover:brightness-110"
-              >
-                <FontAwesomeIcon icon={faUserPlus} className="mr-2" />
-                Connect
-              </Link>
+                <FontAwesomeIcon 
+                  icon={isMobileMenuOpen ? faTimes : faBars} 
+                  className="text-xl" 
+                />
+              </button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-white/95 backdrop-blur-lg border-b border-white/20 shadow-lg">
+          <div className="container-custom px-4 py-4">
+            <div className="flex flex-col space-y-2">
+              <NavLink
+                to="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-3 rounded-lg text-[#8b1e5a] transition-colors ${
+                    isActive
+                      ? "bg-rose-100 text-[#8b1e5a]"
+                      : "hover:bg-rose-50"
+                  }`
+                }
+              >
+                <FontAwesomeIcon icon={faHome} className="text-lg" />
+                <span>Home</span>
+              </NavLink>
+              
+              <NavLink
+                to="/explore"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-3 rounded-lg text-[#8b1e5a] transition-colors ${
+                    isActive
+                      ? "bg-rose-100 text-[#8b1e5a]"
+                      : "hover:bg-rose-50"
+                  }`
+                }
+              >
+                <FontAwesomeIcon icon={faCompass} className="text-lg" />
+                <span>Gallery</span>
+              </NavLink>
+              
+              <NavLink
+                to="/artists"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#8b1e5a] hover:bg-rose-50 transition-colors"
+              >
+                <FontAwesomeIcon icon={faUserPlus} className="text-lg" />
+                <span>Artists</span>
+              </NavLink>
+              
+              <NavLink
+                to="/exhibitions"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#8b1e5a] hover:bg-rose-50 transition-colors"
+              >
+                <FontAwesomeIcon icon={faSearch} className="text-lg" />
+                <span>Exhibitions</span>
+              </NavLink>
+              
+              <NavLink
+                to="/about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#8b1e5a] hover:bg-rose-50 transition-colors"
+              >
+                <FontAwesomeIcon icon={faSearch} className="text-lg" />
+                <span>About</span>
+              </NavLink>
+              
+              <div className="border-t border-gray-200 pt-2 mt-2">
+                <Link
+                  to="/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#8b1e5a] hover:bg-rose-50 transition-colors"
+                >
+                  <FontAwesomeIcon icon={faSignInAlt} className="text-lg" />
+                  <span>Login</span>
+                </Link>
+                
+                <Link
+                  to="/Register"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[#0b5d3b] text-white hover:brightness-110 transition-colors"
+                >
+                  <FontAwesomeIcon icon={faUserPlus} className="text-lg" />
+                  <span>Connect</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
