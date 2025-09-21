@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { registerAPI } from "../services/userServices";
 import {
   faUser,
   faEnvelope,
@@ -64,24 +65,7 @@ const Register = () => {
     }
 
     try {
-      const response = await fetch(
-        "https://artverse-4.onrender.com/api/users/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(formData),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Registration failed");
-      }
+      const data = await registerAPI(formData);
 
       if (formData.role === "artist") {
         localStorage.setItem(
@@ -98,10 +82,8 @@ const Register = () => {
       }
 
       setSuccess("Registration successful!");
-    } catch (error) {
-      setError(
-        error.message || "Failed to connect to server. Please try again."
-      );
+    } catch (err) {
+      setError(err.message || "Failed to connect to server. Please try again.");
     } finally {
       setLoading(false);
     }

@@ -4,7 +4,7 @@ const cors = require("cors");
 const http = require("http");
 const { Server } = require("socket.io");
 const categoryRoutes = require("./routes/categoryRoutes");
-const userController = require("./controllers/userController");
+const userRoutes = require("./routes/users");
 const messageRoutes = require("./routes/messages");
 
 const PORT = process.env.PORT || 2000;
@@ -14,8 +14,13 @@ const server = http.createServer(app);
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST", "OPTIONS"],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "https://artverse-4.onrender.com",
+      "https://artverse-client.netlify.app",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
@@ -28,7 +33,12 @@ app.use(express.urlencoded({ extended: true }));
 const io = new Server(server, {
   path: "/socket.io/",
   cors: {
-    origin: "http://localhost:3000",
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "https://artverse-4.onrender.com",
+      "https://artverse-client.netlify.app",
+    ],
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -71,7 +81,7 @@ app.set("io", io);
 
 // Routes after socket.io setup
 app.use("/api/categories", categoryRoutes);
-app.use("/api/users", userController);
+app.use("/api/users", userRoutes);
 app.use("/api/messages", messageRoutes);
 
 // Error handling middleware must be last

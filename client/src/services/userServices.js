@@ -21,18 +21,16 @@ export const loginAPI = async ({ email, password }) => {
 };
 
 //! Register
-export const registerAPI = async ({ email, password, username }) => {
+export const registerAPI = async (formData) => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/register`,
-      { email, password, username },
-      {
-        withCredentials: true, // 🔑 Add here too
-      }
-    );
+    const response = await axios.post(`${BASE_URL}/register`, formData, {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true, // important for cookies
+    });
     return response.data;
-  } catch (error) {
-    throw error.response?.data || { message: "Failed to connect to server" };
+  } catch (err) {
+    console.error("Register API Error:", err.response?.data || err);
+    throw err.response?.data || { message: "Registration failed" };
   }
 };
 
