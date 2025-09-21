@@ -6,6 +6,7 @@ const { Server } = require("socket.io");
 const categoryRoutes = require("./routes/categoryRoutes");
 const userRoutes = require("./routes/users");
 const messageRoutes = require("./routes/messages");
+const artworkRoutes = require("./routes/artwork");
 
 const PORT = process.env.PORT || 2000;
 
@@ -83,6 +84,7 @@ app.set("io", io);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/artwork", artworkRoutes);
 
 // Error handling middleware must be last
 app.use((err, req, res, next) => {
