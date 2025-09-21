@@ -15,23 +15,36 @@ const PORT = process.env.PORT || 10000;
 //* Database connection
 connectDB();
 
-//* CORS configuration
+//* Allowed origins
+const allowedOrigins = [
+  "https://artverse3112.netlify.app",
+  "https://68cfb189fc8aab0008932dd0--artverse3112.netlify.app",
+];
+
+//* CORS middleware
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (
-        origin === "https://artverse3112.netlify.app" ||
-        origin.endsWith("--artverse3112.netlify.app")
-      ) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS policy: This origin is not allowed"), false);
-      }
+      if (!origin) return callback(null, true); // allow server-to-server requests
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("CORS not allowed"));
     },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
     optionsSuccessStatus: 200,
+  })
+);
+
+//* Explicitly handle OPTIONS preflight requests
+app.options(
+  "*",
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("CORS not allowed"));
+    },
+    credentials: true,
   })
 );
 
@@ -46,9 +59,9 @@ app.use(express.urlencoded({ extended: true }));
 // });
 
 //* Routes
-app.use("/api/users", userRouter); // ✅ Users routes mounted under /api/users
+app.use("/api/users", userRouter); // Users routes: /register, /login, /profile
 app.use("/api/artwork", artworkRouter); // Artwork routes
-app.use("/api/users/profile", profileRouter); // Profile routes
+app.use("/api/users/profile", profileRouter); // Profile routes (if separate)
 app.use("/api/wishlist", wishlistRoutes); // Wishlist routes
 
 app.get("/", (req, res) => {
