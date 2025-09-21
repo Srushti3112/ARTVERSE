@@ -14,9 +14,23 @@ const HOST = "0.0.0.0";
 connectDB();
 
 // CORS configuration
+const allowedOrigins = [
+  "https://artverse3112.netlify.app",
+  "https://68cfb189fc8aab0008932dd0--artverse3112.netlify.app",
+];
+
 app.use(
   cors({
-    origin: "https://artverse3112.netlify.app",
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like Postman)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS policy: This origin is not allowed"), false);
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     optionsSuccessStatus: 200,
