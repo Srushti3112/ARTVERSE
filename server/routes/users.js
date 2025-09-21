@@ -15,13 +15,13 @@ const logRequest = (req, res, next) => {
 };
 
 //!Register
-router.post("/api/users/register", logRequest, userCtrl.register);
+router.post("/register", logRequest, userCtrl.register);
 
 //!Login
-router.post("/api/users/login", logRequest, userCtrl.login);
+router.post("/login", logRequest, userCtrl.login);
 
 //!Profile
-router.get("/api/users/profile", isAuthenticated, async (req, res) => {
+router.get("/profile", isAuthenticated, async (req, res) => {
   try {
     const { email } = req.query;
     const profile = await ArtistProfile.findOne({ email });

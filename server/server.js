@@ -8,6 +8,7 @@ const artworkRouter = require("./routes/artwork");
 const profileRouter = require("./routes/profile");
 const wishlistRoutes = require("./routes/wishlist");
 const app = express();
+const HOST = "0.0.0.0";
 
 //* Database connection call
 connectDB();
@@ -15,7 +16,7 @@ connectDB();
 // CORS configuration
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5173"],
+    origin: "https://artverse3112.netlify.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     optionsSuccessStatus: 200,
@@ -41,11 +42,11 @@ app.use("/api/wishlist", wishlistRoutes);
 // Error handling
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 10000;
 
 // Improved server startup with error handling
 const server = app
-  .listen(PORT, () => {
+  .listen(PORT, HOST, () => {
     console.log(`Server is running on port ${PORT}!`);
   })
   .on("error", (err) => {
