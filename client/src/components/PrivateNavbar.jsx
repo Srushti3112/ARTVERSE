@@ -18,6 +18,7 @@ import {
   faTimes,
   faTrash,
   faBars,
+  faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import UploadArtworkModal from "./UploadArtworkModal";
 
@@ -60,7 +61,7 @@ const PrivateNavbar = () => {
       if (user) {
         try {
           const response = await axios.get(
-            `https://artverse-4.onrender.com/api/users/profile?email=${user.email}`,
+            `https://artverse-4.onrender.com/api/users/profile/current`,
             {
               headers: {
                 Authorization: `Bearer ${user.token}`,

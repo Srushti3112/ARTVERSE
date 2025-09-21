@@ -7,6 +7,7 @@ const categoryRoutes = require("./routes/categoryRoutes");
 const userRoutes = require("./routes/users");
 const messageRoutes = require("./routes/messages");
 const artworkRoutes = require("./routes/artwork");
+const profileRoutes = require("./routes/profile");
 
 const PORT = process.env.PORT || 2000;
 
@@ -85,6 +86,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/artwork", artworkRoutes);
+app.use("/api/users/profile", profileRoutes);
 
 // Error handling middleware must be last
 app.use((err, req, res, next) => {
