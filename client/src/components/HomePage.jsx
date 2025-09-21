@@ -55,9 +55,11 @@ const Homepage = () => {
   useEffect(() => {
     const fetchFeaturedArtworks = async () => {
       try {
-        const response = await axios.get(
-          "https://artverse-4.onrender.com/api/artwork/featured"
-        );
+        const baseURL =
+          process.env.NODE_ENV === "production"
+            ? "https://artverse-4.onrender.com"
+            : "http://localhost:10000";
+        const response = await axios.get(`${baseURL}/api/artwork/featured`);
         setFeaturedArtworks(response.data);
       } catch (error) {
         console.error("Error fetching featured artworks:", error);
@@ -383,6 +385,7 @@ const Homepage = () => {
                     icon={faArrowRight}
                     className="ml-2 group-hover:translate-x-1 transition-transform"
                   />
+                  Access to{" "}
                 </Link>
               </div>
             </div>

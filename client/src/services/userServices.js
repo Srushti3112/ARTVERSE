@@ -1,6 +1,9 @@
 import axios from "axios";
 
-const BASE_URL = "https://artverse-4.onrender.com/api/users";
+// Use local server for development, production server for production
+const BASE_URL = process.env.NODE_ENV === 'production' 
+  ? "https://artverse-4.onrender.com/api/users"
+  : "http://localhost:10000/api/users";
 
 //! Login
 export const loginAPI = async ({ email, password }) => {

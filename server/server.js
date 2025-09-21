@@ -17,6 +17,10 @@ connectDB();
 
 //* Allowed origins
 const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "https://artverse-4.onrender.com",
+  "https://artverse-client.netlify.app",
   "https://artverse3112.netlify.app",
   "https://68cfb189fc8aab0008932dd0--artverse3112.netlify.app",
 ];
