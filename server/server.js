@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const router = require("./routes/users");
+const userRouter = require("./routes/users");
 const errorHandler = require("./middlewares/errorHandler");
 const connectDB = require("./config/database");
 const artworkRouter = require("./routes/artwork");
@@ -19,10 +19,7 @@ connectDB();
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (like Postman or server-side requests)
       if (!origin) return callback(null, true);
-
-      // Allow production and Netlify preview URLs
       if (
         origin === "https://artverse3112.netlify.app" ||
         origin.endsWith("--artverse3112.netlify.app")
@@ -32,7 +29,7 @@ app.use(
         callback(new Error("CORS policy: This origin is not allowed"), false);
       }
     },
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Include OPTIONS for preflight
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
     optionsSuccessStatus: 200,
   })
@@ -43,20 +40,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //* Request logging (optional)
-app.use((req, res, next) => {
-  // console.log(`${req.method} ${req.url}`);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log(`${req.method} ${req.url}`);
+//   next();
+// });
 
 //* Routes
-app.use(router); // Users routes
-app.use("/api/artwork", artworkRouter);
-app.use("/api/users/profile", profileRouter);
-app.use("/api/wishlist", wishlistRoutes);
+app.use("/api/users", userRouter); // ✅ Users routes mounted under /api/users
+app.use("/api/artwork", artworkRouter); // Artwork routes
+app.use("/api/users/profile", profileRouter); // Profile routes
+app.use("/api/wishlist", wishlistRoutes); // Wishlist routes
 
 app.get("/", (req, res) => {
   res.send(
-    "Backend is running 🚀. Use /register, /login, or /profile endpoints."
+    "Backend is running 🚀. Use /api/users/register, /api/users/login, or /api/users/profile endpoints."
   );
 });
 
