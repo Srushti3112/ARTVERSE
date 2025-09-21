@@ -86,7 +86,7 @@ const ArtistProfileForm = () => {
       console.log("Sending data to server:", completeFormData);
 
       const response = await axios.post(
-        "http://localhost:10000/api/users/ArtistProfileForm",
+        "https://artverse-4.onrender.com/api/users/ArtistProfileForm",
         completeFormData,
         {
           headers: {

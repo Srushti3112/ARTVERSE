@@ -56,7 +56,7 @@ const Homepage = () => {
     const fetchFeaturedArtworks = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:10000/api/artwork/featured"
+          "https://artverse-4.onrender.com/api/artwork/featured"
         );
         setFeaturedArtworks(response.data);
       } catch (error) {
@@ -313,7 +313,7 @@ const Homepage = () => {
               </Link>
             </motion.div>
             <br></br>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-[25px] gap-y-[25px]">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {featuredArtworks.slice(0, 6).map((artwork, index) => (
                 <motion.div
                   key={artwork._id}
@@ -322,9 +322,9 @@ const Homepage = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{ y: -2, scale: 1.03 }}
-                  className="group relative"
+                  className="group relative w-full"
                 >
-                  <div className="relative rounded-lg overflow-hidden shadow bg-white transition-transform duration-300 hover:scale-105 w-[370px] h-[310px] mx-auto flex">
+                  <div className="relative rounded-lg overflow-hidden shadow bg-white transition-transform duration-300 hover:scale-105 w-full aspect-[4/3]">
                     <img
                       src={artwork.imageUrl}
                       alt={artwork.title}

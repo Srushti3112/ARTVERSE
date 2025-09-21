@@ -56,7 +56,7 @@ const Login = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:10000/api/users/forgot-password",
+        "https://artverse-4.onrender.com/api/users/forgot-password",
         {
           method: "POST",
           headers: {
