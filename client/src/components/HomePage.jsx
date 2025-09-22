@@ -117,7 +117,7 @@ const Homepage = () => {
             </div>
 
             {/* Categories */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto px-3 pb-24">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto px-2 md:px-3 pb-16 md:pb-24">
               {[
                 {
                   title: "Resin Art",
@@ -161,54 +161,56 @@ const Homepage = () => {
                   image:
                     "https://i.pinimg.com/736x/6b/8b/11/6b8b11b65c0739c81a2a5dc32fcfb46a.jpg",
                 },
-              ].map((category, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group relative h-[300px] overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all duration-500"
-                >
-                  {/* Hover border glow */}
-                  <div className="absolute inset-0 rounded-2xl ring-0 group-hover:ring-4 ring-emerald-600/30 transition-all" />
+              ]
+                .slice(0, 4)
+                .map((category, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="group relative h-[140px] sm:h-[180px] md:h-[300px] overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all duration-500"
+                  >
+                    {/* Hover border glow */}
+                    <div className="absolute inset-0 rounded-2xl ring-0 group-hover:ring-4 ring-emerald-600/30 transition-all" />
 
-                  {/* Image and overlay */}
-                  <motion.img
-                    src={category.image}
-                    alt={category.title}
-                    className="absolute inset-0 w-full h-full object-cover object-center transform transition-transform duration-700 scale-100 group-hover:scale-105 rounded-2xl"
-                    initial={{ scale: 1.2 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.7 }}
-                  />
+                    {/* Image and overlay */}
+                    <motion.img
+                      src={category.image}
+                      alt={category.title}
+                      className="absolute inset-0 w-full h-full object-cover object-center transform transition-transform duration-700 scale-100 group-hover:scale-105 rounded-2xl"
+                      initial={{ scale: 1.2 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 0.7 }}
+                    />
 
-                  {/* Content overlay with lift */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
-                    <div className="absolute inset-0 flex flex-col justify-end p-5">
-                      <motion.div
-                        initial={{ y: 20, opacity: 0 }}
-                        whileInView={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
-                        className="bg-white/80 backdrop-blur-md rounded-lg p-4 transform transition-all duration-500 translate-y-full group-hover:translate-y-0"
-                      >
-                        <div
-                          className={`h-1 w-12 rounded-full mb-4 bg-gradient-to-r ${category.color}`}
-                        />
-                        <h3 className="text-xl font-bold text-gray-900 mb-2 transform transition-all duration-300 opacity-0 group-hover:opacity-100">
-                          {category.title}
-                        </h3>
-                        <p className="text-gray-700 text-xs transform transition-all duration-300 delay-100 opacity-0 group-hover:opacity-100">
-                          {category.description}
-                        </p>
-                      </motion.div>
+                    {/* Content overlay with lift */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
+                      <div className="absolute inset-0 flex flex-col justify-end p-3 md:p-5">
+                        <motion.div
+                          initial={{ y: 20, opacity: 0 }}
+                          whileInView={{ y: 0, opacity: 1 }}
+                          transition={{ duration: 0.6, delay: 0.1 }}
+                          className="bg-white/80 backdrop-blur-md rounded-lg p-3 md:p-4 transform transition-all duration-500 translate-y-full group-hover:translate-y-0"
+                        >
+                          <div
+                            className={`h-1 w-10 md:w-12 rounded-full mb-2 md:mb-4 bg-gradient-to-r ${category.color}`}
+                          />
+                          <h3 className="text-base md:text-xl font-bold text-gray-900 mb-1 md:mb-2 transform transition-all duration-300 opacity-0 group-hover:opacity-100">
+                            {category.title}
+                          </h3>
+                          <p className="text-gray-700 text-[10px] md:text-xs transform transition-all duration-300 delay-100 opacity-0 group-hover:opacity-100">
+                            {category.description}
+                          </p>
+                        </motion.div>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Outer glow subtle */}
-                  <div className="absolute -inset-2 bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-0 group-hover:opacity-60 rounded-2xl blur-xl transition-all duration-500" />
-                </motion.div>
-              ))}
+                    {/* Outer glow subtle */}
+                    <div className="absolute -inset-2 bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-0 group-hover:opacity-60 rounded-2xl blur-xl transition-all duration-500" />
+                  </motion.div>
+                ))}
             </div>
           </div>
         </section>

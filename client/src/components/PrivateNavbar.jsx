@@ -19,6 +19,7 @@ import {
   faTrash,
   faBars,
   faUserPlus,
+  faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import UploadArtworkModal from "./UploadArtworkModal";
 
@@ -290,11 +291,17 @@ const PrivateNavbar = () => {
               <div className="md:hidden ml-auto flex items-center">
                 <button
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  className="p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+                  className={`p-3 rounded-xl transition-all duration-300 ${
+                    isMobileMenuOpen
+                      ? "bg-gradient-to-r from-[#0b5d3b] to-emerald-600 text-white shadow-lg transform rotate-90"
+                      : "text-[#1c2a3a] hover:bg-emerald-100 hover:shadow-md"
+                  }`}
                 >
-                  <FontAwesomeIcon 
-                    icon={isMobileMenuOpen ? faTimes : faBars} 
-                    className="text-xl" 
+                  <FontAwesomeIcon
+                    icon={isMobileMenuOpen ? faTimes : faBars}
+                    className={`text-xl transition-transform duration-300 ${
+                      isMobileMenuOpen ? "rotate-180" : "rotate-0"
+                    }`}
                   />
                 </button>
               </div>
@@ -304,120 +311,129 @@ const PrivateNavbar = () => {
 
         {/* Mobile Menu Dropdown */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-white/95 backdrop-blur-lg border-b border-white/20 shadow-lg">
-            <div className="container-custom px-4 py-4">
-              <div className="flex flex-col space-y-2">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="md:hidden bg-gradient-to-br from-emerald-50/95 to-teal-50/95 backdrop-blur-lg border-b border-emerald-200/30 shadow-2xl"
+          >
+            <div className="container-custom px-4 py-6">
+              <div className="flex flex-col space-y-3">
                 <NavLink
                   to="/"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 transition-colors ${
+                    `flex items-center gap-3 px-4 py-3 rounded-xl text-[#1c2a3a] transition-all duration-300 ${
                       isActive
-                        ? "bg-gray-100 text-gray-900"
-                        : "hover:bg-gray-50"
+                        ? "bg-gradient-to-r from-[#0b5d3b] to-emerald-600 text-white shadow-lg transform scale-105"
+                        : "hover:bg-gradient-to-r hover:from-emerald-100 hover:to-teal-100 hover:shadow-md hover:transform hover:scale-102"
                     }`
                   }
                 >
                   <FontAwesomeIcon icon={faHome} className="text-lg" />
-                  <span>Home</span>
+                  <span className="font-medium">Home</span>
                 </NavLink>
-                
+
                 <NavLink
                   to="/explore"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 transition-colors ${
+                    `flex items-center gap-3 px-4 py-3 rounded-xl text-[#1c2a3a] transition-all duration-300 ${
                       isActive
-                        ? "bg-gray-100 text-gray-900"
-                        : "hover:bg-gray-50"
+                        ? "bg-gradient-to-r from-[#0b5d3b] to-emerald-600 text-white shadow-lg transform scale-105"
+                        : "hover:bg-gradient-to-r hover:from-emerald-100 hover:to-teal-100 hover:shadow-md hover:transform hover:scale-102"
                     }`
                   }
                 >
                   <FontAwesomeIcon icon={faCompass} className="text-lg" />
-                  <span>Gallery</span>
+                  <span className="font-medium">Gallery</span>
                 </NavLink>
-                
+
                 <NavLink
                   to="/artists"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#1c2a3a] hover:bg-gradient-to-r hover:from-emerald-100 hover:to-teal-100 hover:shadow-md hover:transform hover:scale-102 transition-all duration-300"
                 >
                   <FontAwesomeIcon icon={faUserPlus} className="text-lg" />
-                  <span>Artists</span>
+                  <span className="font-medium">Artists</span>
                 </NavLink>
-                
+
                 <NavLink
                   to="/exhibitions"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#1c2a3a] hover:bg-gradient-to-r hover:from-emerald-100 hover:to-teal-100 hover:shadow-md hover:transform hover:scale-102 transition-all duration-300"
                 >
                   <FontAwesomeIcon icon={faSearch} className="text-lg" />
-                  <span>Exhibitions</span>
+                  <span className="font-medium">Exhibitions</span>
                 </NavLink>
-                
+
                 <NavLink
                   to="/about"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#1c2a3a] hover:bg-gradient-to-r hover:from-emerald-100 hover:to-teal-100 hover:shadow-md hover:transform hover:scale-102 transition-all duration-300"
                 >
                   <FontAwesomeIcon icon={faSearch} className="text-lg" />
-                  <span>About</span>
+                  <span className="font-medium">About</span>
                 </NavLink>
-                
+
                 {user?.role === "artist" && (
                   <button
                     onClick={() => {
                       setIsUploadModalOpen(true);
                       setIsMobileMenuOpen(false);
                     }}
-                    className="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-[#0b5d3b] to-emerald-600 text-white hover:from-emerald-700 hover:to-teal-600 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                   >
-                    <FontAwesomeIcon icon={faCloudUploadAlt} className="text-lg" />
-                    <span>Upload Artwork</span>
+                    <FontAwesomeIcon
+                      icon={faCloudUploadAlt}
+                      className="text-lg"
+                    />
+                    <span className="font-medium">Upload Artwork</span>
                   </button>
                 )}
-                
+
                 <button
                   onClick={() => {
                     setIsWishlistOpen(true);
                     setIsMobileMenuOpen(false);
                   }}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#1c2a3a] hover:bg-gradient-to-r hover:from-emerald-100 hover:to-teal-100 hover:shadow-md hover:transform hover:scale-102 transition-all duration-300"
                 >
                   <FontAwesomeIcon icon={faHeart} className="text-lg" />
-                  <span>Wishlist</span>
+                  <span className="font-medium">Wishlist</span>
                 </button>
-                
-                <div className="border-t border-gray-200 pt-2 mt-2">
+
+                <div className="border-t border-emerald-200 pt-4 mt-4">
                   <NavLink
                     to="/profile"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#1c2a3a] hover:bg-gradient-to-r hover:from-emerald-100 hover:to-teal-100 hover:shadow-md hover:transform hover:scale-102 transition-all duration-300"
                   >
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-rose-500 flex items-center justify-center text-sm text-white">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[#0b5d3b] to-emerald-600 flex items-center justify-center text-sm text-white shadow-md">
                       {user?.username
                         ?.split(" ")
                         .map((n) => n[0])
                         .join("")
                         .toUpperCase()}
                     </div>
-                    <span>Profile</span>
+                    <span className="font-medium">Profile</span>
                   </NavLink>
-                  
+
                   <button
                     onClick={() => {
                       logoutHandler();
                       setIsMobileMenuOpen(false);
                     }}
-                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors w-full"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#8b1e5a] hover:bg-gradient-to-r hover:from-pink-100 hover:to-rose-100 hover:shadow-md hover:transform hover:scale-102 transition-all duration-300 w-full"
                   >
                     <FontAwesomeIcon icon={faSignOutAlt} className="text-lg" />
-                    <span>Logout</span>
+                    <span className="font-medium">Logout</span>
                   </button>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
       </nav>
       <UploadArtworkModal
