@@ -39,7 +39,7 @@ router.get("/profile", isAuthenticated, async (req, res) => {
 
 //!ArtistProfileForm
 router.post(
-  "/api/users/ArtistProfileForm",
+  "/ArtistProfileForm",
   logRequest,
   upload.none(), // Ensure no file upload is expected
   async (req, res) => {

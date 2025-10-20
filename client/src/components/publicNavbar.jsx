@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   faHome,
   faCompass,
@@ -15,15 +16,15 @@ const NavigationLink = ({ to, children, icon }) => (
   <NavLink
     to={to}
     className={({ isActive }) =>
-      `flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 ${
+      `flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
         isActive
-          ? "bg-rose-100 text-[#8b1e5a]"
-          : "text-[#8b1e5a] hover:bg-rose-50"
+          ? "bg-gradient-to-r from-[#0b5d3b] to-emerald-600 text-white shadow-lg transform scale-105"
+          : "text-[#1c2a3a] hover:bg-gradient-to-r hover:from-emerald-100 hover:to-teal-100 hover:shadow-md hover:transform hover:scale-102"
       }`
     }
   >
     <FontAwesomeIcon icon={icon} className="text-lg" />
-    <span>{children}</span>
+    <span className="font-medium">{children}</span>
   </NavLink>
 );
 
@@ -65,17 +66,17 @@ const PublicNavbar = () => {
             </div>
 
             {/* Right: Actions */}
-            <div className="hidden md:flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-3">
               <Link
                 to="/login"
-                className="px-4 py-2 text-[#8b1e5a] hover:bg-rose-50 rounded-full transition-colors"
+                className="px-4 py-2 text-[#1c2a3a] hover:bg-gradient-to-r hover:from-emerald-100 hover:to-teal-100 rounded-xl transition-all duration-300 font-medium hover:shadow-md hover:transform hover:scale-102"
               >
                 <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
                 Login
               </Link>
               <Link
                 to="/Register"
-                className="px-5 py-2 rounded-full bg-[#0b5d3b] text-white hover:brightness-110 transition-colors shadow"
+                className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#0b5d3b] to-emerald-600 text-white hover:from-emerald-700 hover:to-teal-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 font-medium"
               >
                 <FontAwesomeIcon icon={faUserPlus} className="mr-2" />
                 Connect
@@ -86,11 +87,17 @@ const PublicNavbar = () => {
             <div className="md:hidden flex items-center">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 rounded-lg text-[#8b1e5a] hover:bg-rose-50 transition-colors"
+                className={`p-3 rounded-xl transition-all duration-300 ${
+                  isMobileMenuOpen
+                    ? "bg-gradient-to-r from-[#0b5d3b] to-emerald-600 text-white shadow-lg transform rotate-90"
+                    : "text-[#1c2a3a] hover:bg-emerald-100 hover:shadow-md"
+                }`}
               >
-                <FontAwesomeIcon 
-                  icon={isMobileMenuOpen ? faTimes : faBars} 
-                  className="text-xl" 
+                <FontAwesomeIcon
+                  icon={isMobileMenuOpen ? faTimes : faBars}
+                  className={`text-xl transition-transform duration-300 ${
+                    isMobileMenuOpen ? "rotate-180" : "rotate-0"
+                  }`}
                 />
               </button>
             </div>
@@ -100,88 +107,141 @@ const PublicNavbar = () => {
 
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white/95 backdrop-blur-lg border-b border-white/20 shadow-lg">
-          <div className="container-custom px-4 py-4">
-            <div className="flex flex-col space-y-2">
-              <NavLink
-                to="/"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-lg text-[#8b1e5a] transition-colors ${
-                    isActive
-                      ? "bg-rose-100 text-[#8b1e5a]"
-                      : "hover:bg-rose-50"
-                  }`
-                }
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          className="md:hidden bg-gradient-to-br from-emerald-50/95 to-teal-50/95 backdrop-blur-lg border-b border-emerald-200/30 shadow-2xl"
+        >
+          <div className="container-custom px-4 py-6">
+            <div className="flex flex-col space-y-3">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
               >
-                <FontAwesomeIcon icon={faHome} className="text-lg" />
-                <span>Home</span>
-              </NavLink>
-              
-              <NavLink
-                to="/explore"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-lg text-[#8b1e5a] transition-colors ${
-                    isActive
-                      ? "bg-rose-100 text-[#8b1e5a]"
-                      : "hover:bg-rose-50"
-                  }`
-                }
-              >
-                <FontAwesomeIcon icon={faCompass} className="text-lg" />
-                <span>Gallery</span>
-              </NavLink>
-              
-              <NavLink
-                to="/artists"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#8b1e5a] hover:bg-rose-50 transition-colors"
-              >
-                <FontAwesomeIcon icon={faUserPlus} className="text-lg" />
-                <span>Artists</span>
-              </NavLink>
-              
-              <NavLink
-                to="/exhibitions"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#8b1e5a] hover:bg-rose-50 transition-colors"
-              >
-                <FontAwesomeIcon icon={faSearch} className="text-lg" />
-                <span>Exhibitions</span>
-              </NavLink>
-              
-              <NavLink
-                to="/about"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#8b1e5a] hover:bg-rose-50 transition-colors"
-              >
-                <FontAwesomeIcon icon={faSearch} className="text-lg" />
-                <span>About</span>
-              </NavLink>
-              
-              <div className="border-t border-gray-200 pt-2 mt-2">
-                <Link
-                  to="/login"
+                <NavLink
+                  to="/"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#8b1e5a] hover:bg-rose-50 transition-colors"
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-4 py-3 rounded-xl text-[#1c2a3a] transition-all duration-300 ${
+                      isActive
+                        ? "bg-gradient-to-r from-[#0b5d3b] to-emerald-600 text-white shadow-lg transform scale-105"
+                        : "hover:bg-gradient-to-r hover:from-emerald-100 hover:to-teal-100 hover:shadow-md hover:transform hover:scale-102"
+                    }`
+                  }
                 >
-                  <FontAwesomeIcon icon={faSignInAlt} className="text-lg" />
-                  <span>Login</span>
-                </Link>
-                
-                <Link
-                  to="/Register"
+                  <FontAwesomeIcon icon={faHome} className="text-lg" />
+                  <span className="font-medium">Home</span>
+                </NavLink>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+              >
+                <NavLink
+                  to="/explore"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[#0b5d3b] text-white hover:brightness-110 transition-colors"
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-4 py-3 rounded-xl text-[#1c2a3a] transition-all duration-300 ${
+                      isActive
+                        ? "bg-gradient-to-r from-[#0b5d3b] to-emerald-600 text-white shadow-lg transform scale-105"
+                        : "hover:bg-gradient-to-r hover:from-emerald-100 hover:to-teal-100 hover:shadow-md hover:transform hover:scale-102"
+                    }`
+                  }
+                >
+                  <FontAwesomeIcon icon={faCompass} className="text-lg" />
+                  <span className="font-medium">Gallery</span>
+                </NavLink>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.3 }}
+              >
+                <NavLink
+                  to="/artists"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#1c2a3a] hover:bg-gradient-to-r hover:from-emerald-100 hover:to-teal-100 hover:shadow-md hover:transform hover:scale-102 transition-all duration-300"
                 >
                   <FontAwesomeIcon icon={faUserPlus} className="text-lg" />
-                  <span>Connect</span>
-                </Link>
-              </div>
+                  <span className="font-medium">Artists</span>
+                </NavLink>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.4 }}
+              >
+                <NavLink
+                  to="/exhibitions"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#1c2a3a] hover:bg-gradient-to-r hover:from-emerald-100 hover:to-teal-100 hover:shadow-md hover:transform hover:scale-102 transition-all duration-300"
+                >
+                  <FontAwesomeIcon icon={faSearch} className="text-lg" />
+                  <span className="font-medium">Exhibitions</span>
+                </NavLink>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.5 }}
+              >
+                <NavLink
+                  to="/about"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#1c2a3a] hover:bg-gradient-to-r hover:from-emerald-100 hover:to-teal-100 hover:shadow-md hover:transform hover:scale-102 transition-all duration-300"
+                >
+                  <FontAwesomeIcon icon={faSearch} className="text-lg" />
+                  <span className="font-medium">About</span>
+                </NavLink>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.6 }}
+                className="border-t border-emerald-200 pt-4 mt-4"
+              >
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.7 }}
+                >
+                  <Link
+                    to="/login"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#1c2a3a] hover:bg-gradient-to-r hover:from-emerald-100 hover:to-teal-100 hover:shadow-md hover:transform hover:scale-102 transition-all duration-300"
+                  >
+                    <FontAwesomeIcon icon={faSignInAlt} className="text-lg" />
+                    <span className="font-medium">Login</span>
+                  </Link>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.8 }}
+                >
+                  <Link
+                    to="/Register"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-[#0b5d3b] to-emerald-600 text-white hover:from-emerald-700 hover:to-teal-600 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                  >
+                    <FontAwesomeIcon icon={faUserPlus} className="text-lg" />
+                    <span className="font-medium">Connect</span>
+                  </Link>
+                </motion.div>
+              </motion.div>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
     </nav>
   );

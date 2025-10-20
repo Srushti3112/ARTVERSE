@@ -7,6 +7,7 @@ const connectDB = require("./config/database");
 const artworkRouter = require("./routes/artwork");
 const profileRouter = require("./routes/profile");
 const wishlistRoutes = require("./routes/wishlist");
+const artistRouter = require("./routes/artistProfileRoutes");
 
 const app = express();
 const HOST = "0.0.0.0";
@@ -67,7 +68,7 @@ app.use("/api/users", userRouter); // Users routes: /register, /login, /profile
 app.use("/api/artwork", artworkRouter); // Artwork routes
 app.use("/api/users/profile", profileRouter); // Profile routes (if separate)
 app.use("/api/wishlist", wishlistRoutes); // Wishlist routes
-
+app.use("/api", artistRouter);
 app.get("/", (req, res) => {
   res.send(
     "Backend is running 🚀. Use /api/users/register, /api/users/login, or /api/users/profile endpoints."
