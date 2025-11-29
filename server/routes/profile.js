@@ -32,6 +32,7 @@ router.get("/current", isAuthenticated, async (req, res) => {
         bio: "",
         artCategory: user.role || "Artist",
         location: "",
+        socialMediaUrl: "",
       });
     }
 
@@ -43,6 +44,80 @@ router.get("/current", isAuthenticated, async (req, res) => {
   } catch (error) {
     console.error("Error fetching current profile:", error);
     res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Test route to verify routing is working
+router.get("/artists/test", async (req, res) => {
+  res.json({ message: "Artists route is working!", timestamp: new Date() });
+});
+
+// Get all artists - MUST be before /:userId route to avoid route conflicts
+router.get("/artists/all", async (req, res) => {
+  try {
+    console.log("Artists route hit! Query:", req.query);
+    const { search } = req.query;
+
+    // Find all users with role "artist"
+    let userQuery = { role: "artist" };
+
+    // If search query is provided, search by username, email, or artCategory in User model
+    if (search) {
+      userQuery.$or = [
+        { username: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+        { artCategory: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const artists = await User.find(userQuery)
+      .select(
+        "username email artCategory avatarUrl role createdAt bio location"
+      )
+      .sort({ createdAt: -1 });
+
+    // Get profiles for each artist to get additional info
+    let artistsWithProfiles = await Promise.all(
+      artists.map(async (artist) => {
+        const profile = await UserProfile.findOne({ userId: artist._id });
+        const artworkCount = await Artwork.countDocuments({
+          artist: artist._id,
+        });
+
+        return {
+          _id: artist._id,
+          userId: artist._id,
+          username: artist.username,
+          email: artist.email,
+          fullName: profile?.fullName || artist.username,
+          bio: profile?.bio || artist.bio || "",
+          artCategory: profile?.artCategory || artist.artCategory || "",
+          location: profile?.location || artist.location || "",
+          avatarUrl: artist.avatarUrl || profile?.avatarUrl || null,
+          socialMediaUrl: profile?.socialMediaUrl || "",
+          artworkCount: artworkCount,
+          createdAt: artist.createdAt,
+        };
+      })
+    );
+
+    // If search query is provided, also filter by profile fields (fullName, location, bio)
+    if (search) {
+      const searchLower = search.toLowerCase();
+      artistsWithProfiles = artistsWithProfiles.filter((artist) => {
+        return (
+          artist.fullName?.toLowerCase().includes(searchLower) ||
+          artist.location?.toLowerCase().includes(searchLower) ||
+          artist.bio?.toLowerCase().includes(searchLower) ||
+          artist.artCategory?.toLowerCase().includes(searchLower)
+        );
+      });
+    }
+
+    res.json(artistsWithProfiles);
+  } catch (error) {
+    console.error("Error fetching artists:", error);
+    res.status(500).json({ error: "Server error", details: error.message });
   }
 });
 
@@ -92,6 +167,7 @@ router.get("/:userId", isAuthenticated, async (req, res) => {
       bio: profile?.bio || "",
       artCategory: profile?.artCategory || user.role || "Artist",
       location: profile?.location || "",
+      socialMediaUrl: profile?.socialMediaUrl || "",
       artworks: artworks || [],
     };
 
@@ -119,6 +195,7 @@ router.post("/submit-profile", isAuthenticated, async (req, res) => {
       artCategory,
       location,
       portfolioUrl,
+      socialMediaUrl,
     } = req.body;
 
     const profile = await UserProfile.findOneAndUpdate(
@@ -131,6 +208,7 @@ router.post("/submit-profile", isAuthenticated, async (req, res) => {
         artCategory,
         location,
         portfolioUrl,
+        socialMediaUrl,
       },
       { upsert: true, new: true }
     );

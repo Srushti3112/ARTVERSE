@@ -17,6 +17,7 @@ import HomePage from "./components/HomePage.jsx";
 import GetStarted from "./components/GetStarted.jsx";
 import ArtistProfileForm from "./components/ArtistProfileForm.jsx";
 import Explore from "./components/Explore.jsx";
+import Artists from "./components/Artists.jsx";
 
 const AppContent = () => {
   const userData = useSelector((state) => state?.auth?.user);
@@ -24,22 +25,30 @@ const AppContent = () => {
 
   const location = useLocation();
 
-  // Render navbar only on homepage
+  // Render navbar on main pages (not on login/register)
   const renderNavbar = () => {
-    if (location.pathname === "/") {
-      if (userData) {
-        return <PrivateNavbar />; // Show PrivateNavbar when user is logged in
-      }
-      return <PublicNavbar />; // Show PublicNavbar when user is not logged in
+    const noNavbarPaths = ["/login", "/register"];
+    if (noNavbarPaths.includes(location.pathname)) {
+      return null;
     }
-    return null; // No navbar on other pages
+
+    if (userData) {
+      return <PrivateNavbar />; // Show PrivateNavbar when user is logged in
+    }
+    return <PublicNavbar />; // Show PublicNavbar when user is not logged in
   };
 
   return (
     <div className="App min-h-screen">
       {renderNavbar()}
 
-      <main className={location.pathname === "/" ? "pt-16 sm:pt-20" : "pt-0"}>
+      <main
+        className={
+          ["/login", "/register"].includes(location.pathname)
+            ? "pt-0"
+            : "pt-16 sm:pt-20"
+        }
+      >
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<Register />} />
@@ -47,6 +56,7 @@ const AppContent = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:artistId" element={<Profile />} />
           <Route path="/Explore" element={<Explore />} />
+          <Route path="/artists" element={<Artists />} />
           <Route path="/ArtistProfileForm" element={<ArtistProfileForm />} />
         </Routes>
       </main>
